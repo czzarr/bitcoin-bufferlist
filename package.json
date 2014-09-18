@@ -1,0 +1,30 @@
+{
+  "name": "bitcoin-bufferlist",
+  "version": "0.1.0",
+  "description": "A storage object for Node Buffers with handy methods for making bitcoin apps",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "tape test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/challengerdeep/bitcoin-bufferlist.git"
+  },
+  "keywords": [
+    "bitcoin",
+    "buffer",
+    "bufferlist"
+  ],
+  "author": "Stanislas Marion <stanislas.marion@gmail.com> (http://github.com/czzarr)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/challengerdeep/bitcoin-bufferlist/issues"
+  },
+  "homepage": "https://github.com/challengerdeep/bitcoin-bufferlist",
+  "devDependencies": {
+    "tape": "^3.0.0"
+  }
+}
