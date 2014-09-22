@@ -18,9 +18,12 @@ const BufferList = require('bitcoin-bufferlist')
 var bl = new BufferList()
 bl.append(new Buffer('abcd'))
 bl.append(new Buffer('efg'))
-bl.append('hi')                     // bl will also accept & convert Strings
 bl.append(new Buffer('j'))
 bl.append(new Buffer([ 0x3, 0x4 ]))
+bl.append('hi')                     // bl will also accept & convert Strings
+bl.append('00aa', 'hex')                     // bl will also accept & convert hex Strings
+bl.append(0xff)                     // bl will also accept & convert Numbers
+bl.append([118, 169])  // bl will also accept & convert Arrays
 
 console.log(bl.length) // 12
 
@@ -36,23 +39,30 @@ console.log(bl.toString('ascii', 3, 8))  // 'defgh'
 console.log(bl.toString('ascii', 5, 10)) // 'fghij'
 
 // other standard Buffer readables
-console.log(bl.readUInt16BE(10)) // 0x0304
 console.log(bl.readUInt16LE(10)) // 0x0403
 ```
 
 ## API
 
-  * <a href="#ctor"><code><b>new BufferList([ callback ])</b></code></a>
+  * <a href="#ctor"><code><b>new BufferList([s])</b></code></a>
   * <a href="#length"><code>bl.<b>length</b></code></a>
   * <a href="#append"><code>bl.<b>append(buffer)</b></code></a>
   * <a href="#get"><code>bl.<b>get(index)</b></code></a>
   * <a href="#slice"><code>bl.<b>slice([ start[, end ] ])</b></code></a>
   * <a href="#copy"><code>bl.<b>copy(dest, [ destStart, [ srcStart [, srcEnd ] ] ])</b></code></a>
-  * <a href="#duplicate"><code>bl.<b>duplicate()</b></code></a>
-  * <a href="#consume"><code>bl.<b>consume(bytes)</b></code></a>
   * <a href="#toString"><code>bl.<b>toString([encoding, [ start, [ end ]]])</b></code></a>
-  * <a href="#readXX"><code>bl.<b>readDoubleBE()</b></code>, <code>bl.<b>readDoubleLE()</b></code>, <code>bl.<b>readFloatBE()</b></code>, <code>bl.<b>readFloatLE()</b></code>, <code>bl.<b>readInt32BE()</b></code>, <code>bl.<b>readInt32LE()</b></code>, <code>bl.<b>readUInt32BE()</b></code>, <code>bl.<b>readUInt32LE()</b></code>, <code>bl.<b>readInt16BE()</b></code>, <code>bl.<b>readInt16LE()</b></code>, <code>bl.<b>readUInt16BE()</b></code>, <code>bl.<b>readUInt16LE()</b></code>, <code>bl.<b>readInt8()</b></code>, <code>bl.<b>readUInt8()</b></code></a>
-  * <a href="#streams">Streams</a>
+  * <a href="#readXX">, <code>bl.<b>readUInt64LE()</b>,
+<code>bl.<b>readUInt32LE()</b></code>,
+<code>bl.<b>readUInt32LE()</b></code>,
+<code>bl.<b>readUInt16LE()</b></code>,
+<code>bl.<b>readUInt8()</b></code></a>,
+<code>bl.<b>readVarInt(offset)</b></code></a>,
+  * <a href="#writeXX">, <code>bl.<b>writeUInt64LE()</b>,
+<code>bl.<b>writeUInt32LE()</b></code>,
+<code>bl.<b>writeUInt32LE()</b></code>,
+<code>bl.<b>writeUInt16LE()</b></code>,
+<code>bl.<b>writeUInt8()</b></code></a>,
+<code>bl.<b>writeVarInt(n)</b></code></a>,
 
 --------------------------------------------------------
 <a name="ctor"></a>

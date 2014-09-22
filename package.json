@@ -1,6 +1,6 @@
 {
   "name": "bitcoin-bufferlist",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "A storage object for Node Buffers with handy methods for making bitcoin apps",
   "main": "index.js",
   "directories": {

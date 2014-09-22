@@ -8,21 +8,32 @@ function BufferList (s) {
   this._bufs = []
   this.length = 0
 
-  if (Buffer.isBuffer(s))
+  if (!!s)
     this.append(s)
-  else if (Array.isArray(s)) {
-    s.forEach(function (b) {
-      Buffer.isBuffer(b) && this.append(b)
-    }.bind(this))
-  }
 }
 
-BufferList.prototype.append = function (buf) {
-  var isBuffer = Buffer.isBuffer(buf) ||
-                 buf instanceof BufferList
+BufferList.prototype.append = function (s, enc) {
 
-  this._bufs.push(isBuffer ? buf : new Buffer(buf))
-  this.length += buf.length
+  if (Buffer.isBuffer(s) || s instanceof BufferList) {
+    this._bufs.push(s)
+    this.length += s.length
+  } else if ('number' === typeof s) {
+    this._bufs.push(new Buffer([s]))
+    this.length += this._bufs[this._bufs.length - 1].length
+  } else if ('string' === typeof s) {
+    this._bufs.push(new Buffer(s, enc))
+    this.length += this._bufs[this._bufs.length - 1].length
+  } else if (Array.isArray(s)) {
+    if (Buffer.isBuffer(s[0])) {
+      s.forEach(function (buf) {
+        this._bufs.push(buf)
+        this.length += buf.length
+      }.bind(this))
+    } else {
+      this._bufs.push(new Buffer(s))
+      this.length += this._bufs[this._bufs.length - 1].length
+    }
+  }
   return this
 }
 

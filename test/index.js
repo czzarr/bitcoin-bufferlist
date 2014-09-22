@@ -231,7 +231,7 @@ tape('test readUInt64LE', function (t) {
   t.end()
 })
 
-tape.only('test readVarInt', function (t) {
+tape('test readVarInt', function (t) {
   var buf1 = new Buffer('02', 'hex')
     , buf2 = new Buffer('fdfe00', 'hex')
     , buf3 = new Buffer('feffffff00', 'hex')
