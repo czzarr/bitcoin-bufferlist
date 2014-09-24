@@ -140,6 +140,43 @@ tape('test writeUInt64LE', function (t) {
   t.end()
 })
 
+tape('test writeUInt16BE', function (t) {
+  var bl  = new BufferList()
+
+  bl.writeUInt16BE(2)
+  bl.writeUInt16BE(3)
+  bl.writeUInt16BE(4)
+  bl.writeUInt16BE(5)
+
+  t.equal(bl.toString('hex'), '0002000300040005')
+
+  t.end()
+})
+
+tape('test writeUInt32BE', function (t) {
+  var bl  = new BufferList()
+
+  bl.writeUInt32BE(2)
+  bl.writeUInt32BE(3)
+  bl.writeUInt32BE(4)
+  bl.writeUInt32BE(5)
+
+  t.equal(bl.toString('hex'), '00000002000000030000000400000005')
+
+  t.end()
+})
+
+tape('test writeUInt64BE', function (t) {
+  var bl  = new BufferList()
+
+  bl.writeUInt64BE(2)
+  bl.writeUInt64BE(3)
+
+  t.equal(bl.toString('hex'), '00000000000000020000000000000003')
+
+  t.end()
+})
+
 tape('test writeVarInt', function (t) {
   var bl  = new BufferList()
 
@@ -228,6 +265,62 @@ tape('test readUInt64LE', function (t) {
   bl.append(buf4)
 
   t.equal(bl.readUInt64LE(0), 1)
+  t.end()
+})
+
+tape('test readUInt16BE', function (t) {
+  var buf1 = new Buffer(1)
+    , buf2 = new Buffer(3)
+    , buf3 = new Buffer(3)
+    , bl   = new BufferList()
+
+  buf2[1] = 0x3
+  buf2[2] = 0x4
+  buf3[0] = 0x23
+  buf3[1] = 0x42
+
+  bl.append(buf1)
+  bl.append(buf2)
+  bl.append(buf3)
+
+  t.equal(bl.readUInt16BE(2), 0x0304)
+  t.equal(bl.readUInt16BE(3), 0x0423)
+  t.equal(bl.readUInt16BE(4), 0x2342)
+  t.end()
+})
+
+tape('test readUInt32BE', function (t) {
+  var buf1 = new Buffer(1)
+    , buf2 = new Buffer(3)
+    , buf3 = new Buffer(3)
+    , bl   = new BufferList()
+
+  buf2[1] = 0x3
+  buf2[2] = 0x4
+  buf3[0] = 0x23
+  buf3[1] = 0x42
+
+  bl.append(buf1)
+  bl.append(buf2)
+  bl.append(buf3)
+
+  t.equal(bl.readUInt32BE(2), 0x03042342)
+  t.end()
+})
+
+tape('test readUInt64BE', function (t) {
+  var buf1 = new Buffer('0000', 'hex')
+    , buf2 = new Buffer('0001', 'hex')
+    , buf3 = new Buffer('0000', 'hex')
+    , buf4 = new Buffer('0000', 'hex')
+    , bl   = new BufferList()
+
+  bl.append(buf1)
+  bl.append(buf2)
+  bl.append(buf3)
+  bl.append(buf4)
+
+  t.equal(bl.readUInt64BE(0), 4294967296)
   t.end()
 })
 
@@ -354,5 +447,19 @@ tape('copy an interval between two buffers', function (t) {
   b.copy(buf2, 0, 5, 15)
 
   t.equal(b.slice(5, 15).toString('hex'), buf2.toString('hex'), 'same buffer')
+  t.end()
+})
+
+tape('write a string with null padding', function (t) {
+  var s = 'toto'
+  var l = 10
+  var b = BufferList()
+
+  b.writePad(s, l)
+  console.log(b.slice());
+
+  t.equal(b.length, 10)
+  t.equal(b.slice(0, 4).toString('hex'), '746f746f')
+  t.equal(b.slice(4, 10).toString('hex'), '000000000000')
   t.end()
 })

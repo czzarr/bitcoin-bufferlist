@@ -37,6 +37,13 @@ BufferList.prototype.append = function (s, enc) {
   return this
 }
 
+BufferList.prototype.writePad = function (s, length, enc) {
+  var buf = new Buffer(length)
+  buf.fill(0)
+  buf.write(s, enc)
+  this.append(buf)
+}
+
 BufferList.prototype.copy = function (dst, dstStart, srcStart, srcEnd) {
   if (typeof srcStart != 'number' || srcStart < 0)
     srcStart = 0
@@ -116,7 +123,9 @@ BufferList.prototype.get = function (index) {
   var methods = {
     writeUInt8: 1,
     writeUInt16LE: 2,
-    writeUInt32LE: 4
+    writeUInt16BE: 2,
+    writeUInt32LE: 4,
+    writeUInt32BE: 4
   }
 
   for (var m in methods) {
@@ -134,7 +143,9 @@ BufferList.prototype.get = function (index) {
   var methods = {
     readUInt8: 1,
     readUInt16LE: 2,
-    readUInt32LE: 4
+    readUInt16BE: 2,
+    readUInt32LE: 4,
+    readUInt32BE: 4
   }
 
   for (var m in methods) {
@@ -155,9 +166,23 @@ BufferList.prototype.writeUInt64LE = function (n) {
   buf.writeUInt32LE(Math.floor(n / 0x100000000), 4)
 }
 
+BufferList.prototype.writeUInt64BE = function (n) {
+  verifuint(n, 0x001fffffffffffff)
+  var buf = new Buffer(8)
+  this.append(buf)
+  buf.writeUInt32BE(Math.floor(n / 0x100000000), 0)
+  buf.writeInt32BE(n & -1, 4)
+}
+
 // https://github.com/bitcoinjs/bitcoinjs-lib/blob/cc98600154bf921acaff2efd907c1fcec08232e8/src/bufferutils.js
 BufferList.prototype.readUInt64LE = function (offset) {
   var n = this.readUInt32LE(offset) + this.readUInt32LE(offset + 4) * 0x100000000
+  verifuint(n, 0x001fffffffffffff)
+  return n
+}
+
+BufferList.prototype.readUInt64BE = function (offset) {
+  var n = this.readUInt32BE(offset) * 0x100000000 + this.readUInt32BE(offset + 4)
   verifuint(n, 0x001fffffffffffff)
   return n
 }

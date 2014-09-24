@@ -47,20 +47,27 @@ console.log(bl.readUInt16LE(10)) // 0x0403
   * <a href="#ctor"><code><b>new BufferList([s])</b></code></a>
   * <a href="#length"><code>bl.<b>length</b></code></a>
   * <a href="#append"><code>bl.<b>append(buffer)</b></code></a>
+  * <a href="#writePad"><code>bl.<b>writePad(string, length, encoding)</b></code></a>
   * <a href="#get"><code>bl.<b>get(index)</b></code></a>
   * <a href="#slice"><code>bl.<b>slice([ start[, end ] ])</b></code></a>
   * <a href="#copy"><code>bl.<b>copy(dest, [ destStart, [ srcStart [, srcEnd ] ] ])</b></code></a>
   * <a href="#toString"><code>bl.<b>toString([encoding, [ start, [ end ]]])</b></code></a>
-  * <a href="#readXX">, <code>bl.<b>readUInt64LE()</b>,
+  * <a href="#readXX">
+    <code>bl.<b>readUInt64LE()</b></code>,
+    <code>bl.<b>readUInt64BE()</b></code>,
 <code>bl.<b>readUInt32LE()</b></code>,
-<code>bl.<b>readUInt32LE()</b></code>,
+<code>bl.<b>readUInt32BE()</b></code>,
 <code>bl.<b>readUInt16LE()</b></code>,
+<code>bl.<b>readUInt16BE()</b></code>,
 <code>bl.<b>readUInt8()</b></code></a>,
 <code>bl.<b>readVarInt(offset)</b></code></a>,
-  * <a href="#writeXX">, <code>bl.<b>writeUInt64LE()</b>,
+  * <a href="#writeXX">
+    <code>bl.<b>writeUInt64LE()</b></code>,
+    <code>bl.<b>writeUInt64BE()</b></code>,
 <code>bl.<b>writeUInt32LE()</b></code>,
-<code>bl.<b>writeUInt32LE()</b></code>,
+<code>bl.<b>writeUInt32BE()</b></code>,
 <code>bl.<b>writeUInt16LE()</b></code>,
+<code>bl.<b>writeUInt16BE()</b></code>,
 <code>bl.<b>writeUInt8()</b></code></a>,
 <code>bl.<b>writeVarInt(n)</b></code></a>,
 
@@ -94,6 +101,12 @@ Get the length of the list in bytes. This is the sum of the lengths of all of th
 `append(buffer)` adds an additional buffer or BufferList to the internal list.
 
 --------------------------------------------------------
+<a name="writePad"></a>
+### bl.writePad(string, length, encoding)
+`writePad(string, length, encoding)` writes a string padded with zeros
+so that the total length equals length
+
+--------------------------------------------------------
 <a name="get"></a>
 ### bl.get(index)
 `get()` will return the byte at the specified index.
@@ -117,7 +130,7 @@ If the requested range spans a single internal buffer then a slice of that buffe
 
 --------------------------------------------------------
 <a name="readXX"></a>
-### bl.readUInt64LE(), bl.readUInt32LE(), bl.readInt16LE(), bl.readUInt16LE(), bl.readUInt8()
+### bl.readUInt64LE(), bl.readUInt64BE(), bl.readUInt32LE(), bl.readUInt32BE() bl.readUInt16LE(), bl.readUInt16BE(), bl.readUInt8()
 
 All of the standard byte-reading methods of the `Buffer` interface are implemented and will operate across internal Buffer boundaries transparently.
 
@@ -125,7 +138,7 @@ See the <b><code>[Buffer](http://nodejs.org/docs/latest/api/buffer.html)</code><
 
 --------------------------------------------------------
 <a name="writeXX"></a>
-### bl.writeUInt64LE(), bl.writeUInt32LE(), bl.writeInt16LE(), bl.writeUInt16LE(), bl.writeUInt8()
+### bl.writeUInt64LE(), bl.writeUInt64BE(), bl.writeUInt32LE(), bl.writeUInt32BE(), bl.writeIntU16LE(), bl.writeUInt16BE(), bl.writeUInt8()
 
 All of the standard byte-writing methods of the `Buffer`. At the moment you cannot set an offset, and can only append the bytes.
 
